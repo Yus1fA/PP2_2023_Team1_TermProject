@@ -4,7 +4,6 @@ public class Movie {
     private int releaseYear;
     private int runningTime;
 
-   
     public Movie(String title, String director, int releaseYear, int runningTime) {
         this.title = title;
         this.director = director;
@@ -12,7 +11,8 @@ public class Movie {
         this.runningTime = runningTime;
     }
 
-   
+ 
+
     public String getTitle() {
         return title;
     }
@@ -45,7 +45,8 @@ public class Movie {
         this.runningTime = runningTime;
     }
 
-    
+  
+
     public void displayMovieDetails() {
         System.out.println("Title: " + title);
         System.out.println("Director: " + director);
@@ -53,3 +54,4 @@ public class Movie {
         System.out.println("Running Time: " + runningTime + " minutes");
     }
 }
+
