@@ -1,4 +1,4 @@
-public class Movie {
+class Movie {
     private String title;
     private String director;
     private int releaseYear;
@@ -11,47 +11,45 @@ public class Movie {
         this.runningTime = runningTime;
     }
 
- 
-
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    void setTitle(String title) {
         this.title = title;
     }
 
-    public String getDirector() {
+    String getDirector() {
         return director;
     }
 
-    public void setDirector(String director) {
+    void setDirector(String director) {
         this.director = director;
     }
 
-    public int getReleaseYear() {
+    int getReleaseYear() {
         return releaseYear;
     }
 
-    public void setReleaseYear(int releaseYear) {
+    void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
     }
 
-    public int getRunningTime() {
+    int getRunningTime() {
         return runningTime;
     }
 
-    public void setRunningTime(int runningTime) {
+    void setRunningTime(int runningTime) {
         this.runningTime = runningTime;
     }
 
-  
-
-    public void displayMovieDetails() {
+   
+    displayMovieDetails() {
         System.out.println("Title: " + title);
         System.out.println("Director: " + director);
         System.out.println("Release Year: " + releaseYear);
         System.out.println("Running Time: " + runningTime + " minutes");
     }
 }
+
 
