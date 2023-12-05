@@ -10,8 +10,12 @@ public class UserClass {
     private String password;
 
     public UserClass(String username, String password) {
-        setUsername(username);
-        setPassword(password);
+        try {
+            setUsername(username);
+            setPassword(password);
+        } catch (InvalidLoginExceptions e) {
+            e.printStackTrace(); 
+        }
     }
 
     public String getUsername() {
@@ -22,24 +26,39 @@ public class UserClass {
         return password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String username) throws InvalidLoginExceptions {
+        if (username.length() < 8) {
+            System.out.println(username.length());
+            throw new InvalidLoginExceptions("Username must be containing at least 8 or more characters.");
+        }
+        else {
+            this.username = username;
+        }
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String password) throws InvalidLoginExceptions {
+        if (password.length() < 8) {
+            throw new InvalidLoginExceptions("Password must be at least 8 or more characters.");
+        }
+        else {
+            this.password = password;
+        }
     }
 
     public static void main(String[] args) {
         // Test part
-        UserClass user = new UserClass("mark_pain", "12345679");
+        UserClass user1 = new UserClass("mark_pain", "123456789");
         UserClass user2 = new UserClass("john_smith", "15s16s17s");
-        user.login();
+        UserClass user3 = new UserClass("ted_johnson", "c7o8d9e");
+        user1.login();
         user2.login();
-        user.register();
+        user3.login(); System.out.println();
+        user1.register();
         user2.register();
-        user.login();
+        user3.register(); System.out.println();
+        user1.login();
         user2.login();
+        user3.login();
     }
 
     public HashMap<String, String> readUserDatabase() {
@@ -74,6 +93,11 @@ public class UserClass {
     public void login() {
         HashMap<String, String> users = readUserDatabase();
 
+        if (getUsername() == null || getPassword() == null) {
+            System.out.println("Username or password was been written incorrectly.");
+            return;
+        }
+
         if (users.containsKey(getUsername())) {
             if (users.get(getUsername()).equals(getPassword())) {
                 System.out.println("User -> " + getUsername() + " logged in.");
@@ -89,9 +113,15 @@ public class UserClass {
         HashMap<String, String> users = readUserDatabase();
 
         if (!users.containsKey(getUsername())) {
-            users.put(getUsername(), getPassword());
-            writeUserDatabase(users);
-            System.out.println("User -> " + getUsername() + " registered.");
+            try {
+                setPassword(getPassword());
+                users.put(getUsername(), getPassword());
+                writeUserDatabase(users);
+                System.out.println("User -> " + getUsername() + " registered.");
+
+                } catch (Exception e) {
+                    System.out.println("Faced error: " + e.getMessage());
+                }
         } else {
             System.out.println("User -> " + getUsername() + " already existed.");
         }
