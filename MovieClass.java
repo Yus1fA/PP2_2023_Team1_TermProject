@@ -1,54 +1,54 @@
-class Movie {
+public class MovieClass {
     private String title;
     private String director;
     private int releaseYear;
     private int runningTime;
 
-    public Movie(String title, String director, int releaseYear, int runningTime) {
-        this.title = title;
-        this.director = director;
-        this.releaseYear = releaseYear;
-        this.runningTime = runningTime;
+    public MovieClass(String title, String director, int releaseYear, int runningTime) {
+        setTitle(title);
+        setDirector(director);
+        setReleaseYear(releaseYear);
+        setRunningTime(runningTime);
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    String getDirector() {
+    public String getDirector() {
         return director;
     }
 
-    void setDirector(String director) {
+    public void setDirector(String director) {
         this.director = director;
     }
 
-    int getReleaseYear() {
+    public int getReleaseYear() {
         return releaseYear;
     }
 
-    void setReleaseYear(int releaseYear) {
+    public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
     }
 
-    int getRunningTime() {
+    public int getRunningTime() {
         return runningTime;
     }
 
-    void setRunningTime(int runningTime) {
+    public void setRunningTime(int runningTime) {
         this.runningTime = runningTime;
     }
 
-   
-    displayMovieDetails() {
-        System.out.println("Title: " + title);
-        System.out.println("Director: " + director);
-        System.out.println("Release Year: " + releaseYear);
-        System.out.println("Running Time: " + runningTime + " minutes");
+
+    public void displayMovieDetails() {
+        System.out.println("Title: " + getTitle());
+        System.out.println("Director: " + getDirector());
+        System.out.println("Release Year: " + getReleaseYear());
+        System.out.println("Running Time: " + getRunningTime() + " minutes");
     }
 }
 
