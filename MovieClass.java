@@ -4,6 +4,14 @@ public class MovieClass {
     private int releaseYear;
     private int runningTime;
 
+    public Movie() {
+        this.title = "Untitled";
+        this.director = "Unknown";
+        this.releaseYear = 2023; // Default release year
+        this.runningTime = 0;    // Default running time
+    }
+
+
     public MovieClass(String title, String director, int releaseYear, int runningTime) {
         setTitle(title);
         setDirector(director);
