@@ -10,7 +10,7 @@ public class UserInterface extends JFrame {
 
         JTabbedPane tabbed = new JTabbedPane();
 
-        JPanel browse= new JPanel(new BorderLayout());
+        JPanel browse = new JPanel(new BorderLayout());
         JScrollPane movieList = new JScrollPane(new JList<>());
 
         movieList.setBorder(BorderFactory.createTitledBorder("Movies"));
@@ -24,6 +24,11 @@ public class UserInterface extends JFrame {
         watchlist.add(watchlistScroll, BorderLayout.CENTER);
         tabbed.addTab("Watchlist", watchlist);
 
+        JPanel registration = new JPanel(new BorderLayout());
+        JButton register = new JButton("Register");
+        registration.add(register, BorderLayout.CENTER);
+        tabbed.addTab("Registration", registration);
+
         frame.add(tabbed, BorderLayout.CENTER);
 
         JButton addWatchlist = new JButton("Add to Watchlist");
@@ -35,7 +40,7 @@ public class UserInterface extends JFrame {
         frame.setTitle("Movie Database");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setSize(420, 420);
+        frame.setSize(600, 600); 
         frame.setVisible(true);
     }
 }
