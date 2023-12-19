@@ -1,4 +1,4 @@
-public class MovieClass {
+public class Movie {
     private String title;
     private String director;
     private int releaseYear;
@@ -12,7 +12,7 @@ public class MovieClass {
     }
 
 
-    public MovieClass(String title, String director, int releaseYear, int runningTime) {
+    public Movie(String title, String director, int releaseYear, int runningTime) {
         setTitle(title);
         setDirector(director);
         setReleaseYear(releaseYear);

@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -8,11 +10,13 @@ import java.io.IOException;
 public class UserClass {
     private String username;
     private String password;
+    private List<Movie> watchlist;
 
     public UserClass(String username, String password) {
         try {
             setUsername(username);
             setPassword(password);
+            watchlist = new ArrayList<>();
         } catch (InvalidLoginExceptions e) {
             e.printStackTrace(); 
         }
@@ -43,6 +47,18 @@ public class UserClass {
         else {
             this.password = password;
         }
+    }
+    
+    public void addToWatchlist(Movie movie) {
+        watchlist.add(movie);
+    }
+
+    public void removeFromWatchlist(Movie movie) {
+        watchlist.remove(movie);
+    }
+
+    public List<Movie> getWatchlist() {
+        return watchlist;
     }
 
     public static void main(String[] args) {
