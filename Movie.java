@@ -11,7 +11,6 @@ public class Movie {
         this.runningTime = 0;    // Default running time
     }
 
-
     public Movie(String title, String director, int releaseYear, int runningTime) {
         setTitle(title);
         setDirector(director);
@@ -24,6 +23,9 @@ public class Movie {
     }
 
     public void setTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty.");
+        }
         this.title = title;
     }
 
@@ -32,6 +34,9 @@ public class Movie {
     }
 
     public void setDirector(String director) {
+        if (director == null || director.isEmpty()) {
+            throw new IllegalArgumentException("Director cannot be null or empty.");
+        }
         this.director = director;
     }
 
@@ -40,6 +45,9 @@ public class Movie {
     }
 
     public void setReleaseYear(int releaseYear) {
+        if (releaseYear <= 0) {
+            throw new IllegalArgumentException("Release year must be positive.");
+        }
         this.releaseYear = releaseYear;
     }
 
@@ -48,16 +56,18 @@ public class Movie {
     }
 
     public void setRunningTime(int runningTime) {
+        if (runningTime < 0) {
+            throw new IllegalArgumentException("Running time must be non-negative.");
+        }
         this.runningTime = runningTime;
     }
 
+    @Override
+    public String toString() {
+        return title + " [" + releaseYear + "] - Directed by " + director;
+    }
 
-    public void displayMovieDetails() {
-        System.out.println("Title: " + getTitle());
-        System.out.println("Director: " + getDirector());
-        System.out.println("Release Year: " + getReleaseYear());
-        System.out.println("Running Time: " + getRunningTime() + " minutes");
+    public String getMovieDetails() {
+        return "Title: " + getTitle() + "\nDirector: " + getDirector() +"\nRelease Year: " + getReleaseYear() + "\nRunning Time: " + getRunningTime() + " minutes.";
     }
 }
-
-

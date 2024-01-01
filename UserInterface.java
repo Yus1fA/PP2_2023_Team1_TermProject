@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class UserInterface extends JFrame {
     private MovieDatabase movieDatabase;
-    private UserClass currentUser;
+    private User currentUser;
 
     public UserInterface() {
         movieDatabase = new MovieDatabase();

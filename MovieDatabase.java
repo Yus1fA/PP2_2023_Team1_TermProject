@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class MovieDatabase {
     private Map<String, Movie> movies;
-    private Map<String, UserClass> users;
+    private Map<String, User> users;
 
     public MovieDatabase() {
         movies = new HashMap<>();
