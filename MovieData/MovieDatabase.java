@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import UserData.User;
 
 public class MovieDatabase {
@@ -33,12 +32,21 @@ public class MovieDatabase {
         }
     }
 
-    public void removeMovie(String title, String director, int releaseYear) {
-        // Existing removeMovie implementation
+    public void removeMovie(String title, String director, int releaseYear) throws MovieNotExist {
+        String key = generateKey(title, director, releaseYear);
+        if (!movies.containsKey(key)) {
+            throw new MovieNotExist("Movie does not exist: " + title);
+        }
+        movies.remove(key);
+        System.out.println("Movie removed: " + title);
     }
 
-    public Movie getMovie(String title, String director, int releaseYear) {
-        // Existing getMovie implementation
+    public Movie getMovie(String title, String director, int releaseYear) throws MovieNotExist {
+        String key = generateKey(title, director, releaseYear);
+        if (!movies.containsKey(key)) {
+            throw new MovieNotExist("Movie does not exist: " + title);
+        }
+        return movies.get(key);
     }
 
     public List<Movie> getAllMovies() {
@@ -53,3 +61,4 @@ public class MovieDatabase {
         // Existing validateMovieInput implementation
     }
 }
+
