@@ -2,7 +2,6 @@ package GUIPart;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 import MovieData.Movie;
 import MovieData.MovieDatabase;
