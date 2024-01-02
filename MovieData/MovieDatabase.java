@@ -1,9 +1,8 @@
 package MovieData;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
+import java.util.stream.Collectors;
+import java.io.*;
+import java.nio.file.*;
 import UserData.User;
 
 public class MovieDatabase {
@@ -53,8 +52,63 @@ public class MovieDatabase {
         return new ArrayList<>(movies.values());
     }
 
+    public List<Movie> getMoviesByTitle(String title) {
+        return movies.values().stream()
+                     .filter(movie -> movie.getTitle().equalsIgnoreCase(title))
+                     .collect(Collectors.toList());
+    }
+
+    public List<Movie> getMoviesByDirector(String director) {
+        return movies.values().stream()
+                    .filter(movie -> movie.getDirector().equals(director))
+                    .collect(Collectors.toList());
+    }
+
+    public List<Movie> getMoviesByReleaseYear(int releaseYear) {
+        return movies.values().stream()
+                     .filter(movie -> movie.getReleaseYear() == releaseYear)
+                     .collect(Collectors.toList());
+    }
+
+    public List<Movie> getMoviesByRunningTime(int runningTime) {
+        return movies.values().stream()
+                     .filter(movie -> movie.getRunningTime() == runningTime)
+                     .collect(Collectors.toList());
+    }
+
+    public void saveMoviesToFile(String filename) throws IOException {
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("Resources//MovieDatabase.txt"))) {
+            for (Movie movie : movies.values()) {
+                writer.write(movie.toString());
+                writer.newLine();
+            }
+        }
+    }
+
+    public void loadMoviesFromFile(String filename) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get("Resources/MovieDatabase.txt"));
+        for (String line : lines) {
+            Movie movie = parseMovie(line);
+            movies.put(generateKey(movie.getTitle(), movie.getDirector(), movie.getReleaseYear()), movie);
+        }
+    }
+
+    private Movie parseMovie(String line) {
+        String[] parts = line.split(",");
+        if (parts.length != 4) {
+            throw new IllegalArgumentException("Invalid movie format.");
+        }
+    
+        String title = parts[0];
+        String director = parts[1];
+        int releaseYear = Integer.parseInt(parts[2]);
+        int runningTime = Integer.parseInt(parts[3]);
+    
+        return new Movie(title, director, releaseYear, runningTime);
+    }
+
     private String generateKey(String title, String director, int releaseYear) {
-        return title + "_" + director + "_" + releaseYear;
+        return title + "" + director + "" + releaseYear;
     }
 
     private void validateMovieInput(String title, String director, int releaseYear, int runningTime) {
