@@ -47,7 +47,7 @@ public class UserInterface extends JFrame {
                 } else {
                     Movie selectedMovie = movieList.getSelectedValue();
                     if (selectedMovie != null) {
-                        currentUser.addToWatchlist(selectedMovie);
+                        //currentUser.addToWatchlist(selectedMovie);
                         updateWatchlist(watchlistJList);
                         JOptionPane.showMessageDialog(null, "Movie added to watchlist!");
                     } else {
@@ -65,7 +65,7 @@ public class UserInterface extends JFrame {
                 } else {
                     Movie selectedMovie = watchlistJList.getSelectedValue();
                     if (selectedMovie != null) {
-                        currentUser.removeFromWatchlist(selectedMovie);
+                        //currentUser.removeFromWatchlist(selectedMovie);
                         updateWatchlist(watchlistJList);
                         JOptionPane.showMessageDialog(null, "Movie removed from watchlist!");
                     } else {
@@ -92,7 +92,7 @@ public class UserInterface extends JFrame {
                 } else {
                     Movie selectedMovie = movieList.getSelectedValue();
                     if (selectedMovie != null) {
-                        currentUser.addToWatchlist(selectedMovie);
+                        //currentUser.addToWatchlist(selectedMovie);
                         updateWatchlist(watchlistJList);
                         JOptionPane.showMessageDialog(null, "Movie added to watchlist!");
                     } else {
@@ -113,7 +113,7 @@ public class UserInterface extends JFrame {
                 } else {
                     Movie selectedMovie = watchlistJList.getSelectedValue();
                     if (selectedMovie != null) {
-                        currentUser.removeFromWatchlist(selectedMovie);
+                        //currentUser.removeFromWatchlist(selectedMovie);
                         updateWatchlist(watchlistJList);
                         JOptionPane.showMessageDialog(null, "Movie removed from watchlist!");
                     } else {
@@ -141,16 +141,12 @@ public class UserInterface extends JFrame {
 
     private void updateWatchlist(JList<Movie> watchlistJList) {
         if (currentUser != null) {
-            List<Movie> watchlist = new ArrayList<>(currentUser.getWatchlist());
+            //List<Movie> watchlist = new ArrayList<>(currentUser.getWatchlist());
             DefaultListModel<Movie> listModel = new DefaultListModel<>();
-            for (Movie movie : watchlist) {
-                listModel.addElement(movie);
-            }
-            watchlistJList.setModel(listModel);
+            //for (Movie movie : watchlist) {
+            //    listModel.addElement(movie);
+            //}
+            //watchlistJList.setModel(listModel);
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new UserInterface());
     }
 }

@@ -75,17 +75,4 @@ public class MovieDatabase {
             throw new IllegalArgumentException("Running time must be a non-negative value.");
         }
     }
-
-    // Other methods for user and database management...
-
-    public static void main(String[] args) {
-        MovieDatabase movieDatabase = new MovieDatabase();
-        movieDatabase.addMovie("Inception", "Christopher Nolan", 2010, 148);
-        movieDatabase.addMovie("The Shawshank Redemption", "Frank Darabont", 1994, 142);
-        Movie movie = movieDatabase.getMovie("Inception", "Christopher Nolan", 2010);
-        if (movie != null) {
-            movie.displayMovieDetails();
-        }
-        movieDatabase.removeMovie("The Shawshank Redemption", "Frank Darabont", 1994);
-    }
 }
