@@ -1,9 +1,14 @@
+package MovieData;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import UserData.User;
 
 public class MovieDatabase {
     private Map<String, Movie> movies;
-    private Map<String, UserClass> users;
+    private Map<String, User> users;
 
     public MovieDatabase() {
         movies = new HashMap<>();
@@ -48,6 +53,10 @@ public class MovieDatabase {
         return movies.get(key);
     }
 
+    public List<Movie> getAllMovies() {
+        return new ArrayList<>(movies.values());
+    }
+
     private String generateKey(String title, String director, int releaseYear) {
         return title + "_" + director + "_" + releaseYear;
     }
@@ -68,18 +77,5 @@ public class MovieDatabase {
         if (runningTime < 0) {
             throw new IllegalArgumentException("Running time must be a non-negative value.");
         }
-    }
-
-    // Other methods for user and database management...
-
-    public static void main(String[] args) {
-        MovieDatabase movieDatabase = new MovieDatabase();
-        movieDatabase.addMovie("Inception", "Christopher Nolan", 2010, 148);
-        movieDatabase.addMovie("The Shawshank Redemption", "Frank Darabont", 1994, 142);
-        Movie movie = movieDatabase.getMovie("Inception", "Christopher Nolan", 2010);
-        if (movie != null) {
-            movie.displayMovieDetails();
-        }
-        movieDatabase.removeMovie("The Shawshank Redemption", "Frank Darabont", 1994);
     }
 }
