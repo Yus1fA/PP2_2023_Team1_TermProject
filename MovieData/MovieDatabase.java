@@ -15,7 +15,7 @@ public class MovieDatabase {
         users = new HashMap<>();
     }
 
-    public void addMovie(String title, String director, int releaseYear, int runningTime) {
+    public void addMovie(String title, String director, int releaseYear, int runningTime) throws MovieAlreadyAdded {
         try {
             validateMovieInput(title, director, releaseYear, runningTime);
 
@@ -25,31 +25,27 @@ public class MovieDatabase {
                 movies.put(key, newMovie);
                 System.out.println("Movie added: " + newMovie.getTitle() + " (" + newMovie.getReleaseYear() + ")");
             } else {
-                System.out.println("Movie already exists in the database.");
+                throw new MovieAlreadyAdded("Movie already exists in the database: " + title);
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Error adding movie: " + e.getMessage());
         }
     }
 
-    public void removeMovie(String title, String director, int releaseYear) {
-        try {
-            validateMovieInput(title, director, releaseYear, 0);
-
-            String key = generateKey(title, director, releaseYear);
-            if (movies.containsKey(key)) {
-                Movie removedMovie = movies.remove(key);
-                System.out.println("Movie removed: " + removedMovie.getTitle() + " (" + removedMovie.getReleaseYear() + ")");
-            } else {
-                System.out.println("Movie not found in the database.");
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error removing movie: " + e.getMessage());
+    public void removeMovie(String title, String director, int releaseYear) throws MovieNotExist {
+        String key = generateKey(title, director, releaseYear);
+        if (!movies.containsKey(key)) {
+            throw new MovieNotExist("Movie does not exist: " + title);
         }
+        movies.remove(key);
+        System.out.println("Movie removed: " + title);
     }
 
-    public Movie getMovie(String title, String director, int releaseYear) {
+    public Movie getMovie(String title, String director, int releaseYear) throws MovieNotExist {
         String key = generateKey(title, director, releaseYear);
+        if (!movies.containsKey(key)) {
+            throw new MovieNotExist("Movie does not exist: " + title);
+        }
         return movies.get(key);
     }
 
