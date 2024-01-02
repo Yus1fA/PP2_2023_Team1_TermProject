@@ -10,11 +10,11 @@ public class User {
     private String username;
     private String password;
 
-    public User(String username, String password) {
+    public User(String username, String password) throws UsernameLengthException {
         try {
             setUsername(username);
             setPassword(password);
-        } catch (InvalidLoginExceptions e) {
+        } catch (UsernameLengthException e) {
             e.printStackTrace(); 
         }
     }
@@ -27,16 +27,16 @@ public class User {
         return password;
     }
 
-    public void setUsername(String username) throws InvalidLoginExceptions {
+    public void setUsername(String username) throws UsernameLengthException {
         if (username == null || username.length() < 8) {
-            throw new InvalidLoginExceptions("Username must be at least 8 characters long.");
+            throw new UsernameLengthException("Username must be at least 8 characters long.");
         }
         this.username = username;
     }
 
-    public void setPassword(String password) throws InvalidLoginExceptions {
+    public void setPassword(String password) throws UsernameLengthException {
         if (password == null || password.length() < 8) {
-            throw new InvalidLoginExceptions("Password must be at least 8 characters long.");
+            throw new UsernameLengthException("Password must be at least 8 characters long.");
         }
         this.password = password;
     }
@@ -70,37 +70,34 @@ public class User {
         }
     }
 
-    public void login() {
+    public void login() throws UserNotFoundException {
         HashMap<String, String> users = readUserDatabase();
         if (getUsername() == null || getPassword() == null) {
             System.out.println("Username or password was been written incorrectly.");
             return;
         }
-        if (users.containsKey(getUsername())) {
-            if (users.get(getUsername()).equals(getPassword())) {
-                System.out.println("User -> " + getUsername() + " logged in.");
-            } else {
-                System.out.println("Incorrect password.");
-            }
+        if (!users.containsKey(getUsername())) {
+            throw new UserNotFoundException("User -> " + getUsername() + " is not registered. Before logging in, please register!");
+        }
+        if (users.get(getUsername()).equals(getPassword())) {
+            System.out.println("User -> " + getUsername() + " logged in.");
         } else {
-            System.out.println("User -> " + getUsername() + " is not registered. Before logging in, please register!");
+            System.out.println("Incorrect password.");
         }
     }
 
-    public void register() {
+    public void register() throws UserExistedException {
         HashMap<String, String> users = readUserDatabase();
-
-        if (!users.containsKey(getUsername())) {
-            try {
-                setPassword(getPassword());
-                users.put(getUsername(), getPassword());
-                writeUserDatabase(users);
-                System.out.println("User -> " + getUsername() + " registered.");
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-            }
-        } else {
-            System.out.println("User -> " + getUsername() + " already exists.");
+        if (users.containsKey(getUsername())) {
+            throw new UserExistedException("User -> " + getUsername() + " already exists.");
+        }
+        try {
+            setPassword(getPassword());
+            users.put(getUsername(), getPassword());
+            writeUserDatabase(users);
+            System.out.println("User -> " + getUsername() + " registered.");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
