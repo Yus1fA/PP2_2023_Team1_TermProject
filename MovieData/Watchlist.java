@@ -37,7 +37,7 @@ public class Watchlist {
     }
 
     private void saveWatchlist() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Watchlists/" + username + "watchlist.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Resources/Watchlists/" + username + "watchlist.txt"))) {
             for (Movie movie : watchlist) {
                 writer.write(movie.getTitle() + ":" + movie.getDirector() + ":" + movie.getReleaseYear() + ":" + movie.getRunningTime() + "\n");
             }
@@ -48,7 +48,7 @@ public class Watchlist {
 
     private void loadWatchlistFromFile() {
         watchlist.clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader("Watchlists/" + username + "watchlist.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("Resources/Watchlists/" + username + "watchlist.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");

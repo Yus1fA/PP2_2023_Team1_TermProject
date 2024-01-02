@@ -42,7 +42,7 @@ public class User {
     }
   
     public HashMap<String, String> readUserDatabase() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("database.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("Resources/database.txt"))) {
             HashMap<String, String> users = new HashMap<>();
             String readLine;
 
@@ -59,7 +59,7 @@ public class User {
     }
 
     public void writeUserDatabase(HashMap<String, String> map) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("database.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Resources/database.txt"))) {
             for (String keys : map.keySet()) {
                 String values = map.get(keys);
                 writer.write(keys + ":" + values);
@@ -104,11 +104,11 @@ public class User {
         }
     }
 
-    public static void main(String[] args) {
-        User user = new User("jane_doe", "securepassword123");
+    // public static void main(String[] args) {
+    //     User user = new User("jane_doe", "securepassword123");
     
-        user.login();
-        user.register();
-        user.login();
-    }
+    //     user.login();
+    //     user.register();
+    //     user.login();
+    // }
 }
