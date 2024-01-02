@@ -40,7 +40,7 @@ public class Watchlist {
                         .collect(Collectors.toList());
     }
 
-    private void saveWatchlist() {
+    public void saveWatchlist() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("Resources/Watchlists/" + username + "watchlist.txt"))) {
             for (Movie movie : watchlist) {
                 writer.write(movie.getTitle() + ":" + movie.getDirector() + ":" + movie.getReleaseYear() + ":" + movie.getRunningTime() + "\n");

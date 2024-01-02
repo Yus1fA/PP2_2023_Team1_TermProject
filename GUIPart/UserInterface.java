@@ -19,6 +19,8 @@ public class UserInterface extends JFrame {
     private JPanel loginPanel;
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private JList<Movie> movieList;
+    private JList<Movie> watchlistJList;
 
     public UserInterface() {
         movieDatabase = new MovieDatabase();
@@ -102,12 +104,12 @@ public class UserInterface extends JFrame {
     
         adminPanel.add(movieManagementPanel, BorderLayout.NORTH);
     
-        JList<Movie> movieList = new JList<>();
-        updateMovieList(movieList);
+        movieList = new JList<>();
+        updateMovieList();
         JScrollPane movieListScrollPane = new JScrollPane(movieList);
         movieListScrollPane.setBorder(BorderFactory.createTitledBorder("Movie List"));
         adminPanel.add(movieListScrollPane, BorderLayout.CENTER);
-    
+
         setContentPane(adminPanel);
         revalidate();
         repaint();
@@ -131,7 +133,7 @@ public class UserInterface extends JFrame {
         }
     }
     
-    private void updateMovieList(JList<Movie> movieList) {
+    private void updateMovieList() {
         DefaultListModel<Movie> model = new DefaultListModel<>();
         for (Movie movie : movieDatabase.getAllMovies()) {
             model.addElement(movie);
@@ -139,29 +141,39 @@ public class UserInterface extends JFrame {
         movieList.setModel(model);
     }
 
+    private void updateWatchlist() {
+        DefaultListModel<Movie> model = new DefaultListModel<>();
+        if (currentWatchlist != null) {
+            for (Movie movie : currentWatchlist.getWatchlist()) {
+                model.addElement(movie);
+            }
+        }
+        watchlistJList.setModel(model);
+    }
+
     private void showUserInterface() {
         JPanel userPanel = new JPanel(new BorderLayout());
     
-        JList<Movie> movieList = new JList<>();
-        updateMovieList(movieList);
+        movieList = new JList<>();
+        updateMovieList();
         JScrollPane movieListScrollPane = new JScrollPane(movieList);
         movieListScrollPane.setBorder(BorderFactory.createTitledBorder("Browse Movies"));
         userPanel.add(movieListScrollPane, BorderLayout.CENTER);
-    
-        JPanel watchlistPanel = new JPanel(new BorderLayout());
-        JList<Movie> watchlistJList = new JList<>();
-        updateWatchlist(watchlistJList);
+
+        watchlistJList = new JList<>();
+        updateWatchlist(movieList);
         JScrollPane watchlistScrollPane = new JScrollPane(watchlistJList);
         watchlistScrollPane.setBorder(BorderFactory.createTitledBorder("Your Watchlist"));
+        JPanel watchlistPanel = new JPanel(new BorderLayout());
         watchlistPanel.add(watchlistScrollPane, BorderLayout.CENTER);
-    
+
         JButton addToWatchlistButton = new JButton("Add to Watchlist");
-        addToWatchlistButton.addActionListener(e -> addToWatchlist(movieList.getSelectedValue(), watchlistJList));
+        addToWatchlistButton.addActionListener(e -> addToWatchlist(movieList.getSelectedValue(), movieList));
         userPanel.add(addToWatchlistButton, BorderLayout.SOUTH);
-    
+
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, userPanel, watchlistPanel);
         splitPane.setDividerLocation(300);
-    
+
         setContentPane(splitPane);
         revalidate();
         repaint();
@@ -176,7 +188,8 @@ public class UserInterface extends JFrame {
             JOptionPane.showMessageDialog(this, "Select a movie to add to watchlist.");
         }
     }
-    
+
+
     private void updateWatchlist(JList<Movie> watchlistJList) {
         DefaultListModel<Movie> model = new DefaultListModel<>();
         if (currentWatchlist != null) {
@@ -192,31 +205,39 @@ public class UserInterface extends JFrame {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
         try {
+            if (username.isEmpty() || password.isEmpty()) {
+                throw new IllegalArgumentException("Username and password cannot be empty.");
+            }
+    
             currentUser = new User(username, password);
             currentUser.login();
             currentWatchlist = new Watchlist(username);
             getContentPane().removeAll();
             showRoleSelection();
         } catch (UserNotFoundException | UsernameLengthException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            JOptionPane.showMessageDialog(this, "Login failed: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, "Validation error: " + e.getMessage());
         }
     }
 
     private void registerUser() {
-        String username = usernameField.getText();
-        String password = new String(passwordField.getPassword());
-        try {
-            currentUser = new User(username, password);
-            currentUser.register();
-            currentWatchlist = new Watchlist(username);
-            getContentPane().removeAll();
-            showRoleSelection();
-        } catch (UserExistedException | UsernameLengthException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+    String username = usernameField.getText();
+    String password = new String(passwordField.getPassword());
+    try {
+        if (username.isEmpty() || password.isEmpty()) {
+            throw new IllegalArgumentException("Username and password cannot be empty.");
         }
-    }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new UserInterface());
+        currentUser = new User(username, password);
+        currentUser.register();
+        currentWatchlist = new Watchlist(username);
+        getContentPane().removeAll();
+        showRoleSelection();
+    } catch (UserExistedException | UsernameLengthException e) {
+        JOptionPane.showMessageDialog(this, "Registration failed: " + e.getMessage());
+    } catch (IllegalArgumentException e) {
+        JOptionPane.showMessageDialog(this, "Validation error: " + e.getMessage());
+    }
     }
 }
