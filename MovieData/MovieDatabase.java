@@ -1,7 +1,10 @@
+package MovieData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import UserData.User;
 
 public class MovieDatabase {
     private Map<String, Movie> movies;

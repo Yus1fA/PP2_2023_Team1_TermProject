@@ -1,3 +1,4 @@
+package UserData;
 import java.util.HashMap;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -102,7 +103,7 @@ public class User {
             System.out.println("User -> " + getUsername() + " already exists.");
         }
     }
-    
+
     public static void main(String[] args) {
         User user = new User("jane_doe", "securepassword123");
     

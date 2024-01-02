@@ -1,3 +1,4 @@
+package GUİ;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -5,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+
+import MovieData.Movie;
+import MovieData.MovieDatabase;
+import UserData.User;
 
 public class UserInterface extends JFrame {
     private MovieDatabase movieDatabase;
