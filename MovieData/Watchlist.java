@@ -13,7 +13,12 @@ public class Watchlist {
     public Watchlist(String username) {
         this.username = username;
         this.watchlist = new ArrayList<>();
-        loadWatchlistFromFile();
+        try {
+            loadWatchlistFromFile();
+        } catch (WatchlistNotExist e) {
+            System.out.println(e.getMessage());
+            // Handle the absence of a watchlist, e.g., by creating a new one or logging the error
+        }
     }
 
     public void addToWatchlist(Movie movie) {
@@ -46,9 +51,15 @@ public class Watchlist {
         }
     }
 
-    private void loadWatchlistFromFile() {
+    private void loadWatchlistFromFile() throws WatchlistNotExist {
         watchlist.clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader("Watchlists/" + username + "watchlist.txt"))) {
+        File watchlistFile = new File("Watchlists/" + username + "watchlist.txt");
+
+        if (!watchlistFile.exists()) {
+            throw new WatchlistNotExist("Watchlist does not exist for user: " + username);
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(watchlistFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":");
@@ -58,13 +69,14 @@ public class Watchlist {
                     String director = parts[1];
                     int releaseYear = Integer.parseInt(parts[2]);
                     int runningTime = Integer.parseInt(parts[3]);
-      
+
                     Movie movie = new Movie(title, director, releaseYear, runningTime);
                     watchlist.add(movie);
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new WatchlistNotExist("Error reading watchlist for user: " + username);
         }
     }
 }
+
