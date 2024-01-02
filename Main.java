@@ -1,4 +1,4 @@
-import GUİ.*;
+import GUIPart.*;
 import MovieData.MovieDatabase;
 
 public class Main {

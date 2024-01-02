@@ -1,4 +1,4 @@
-package GUİ;
+package GUIPart;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
