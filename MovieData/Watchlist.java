@@ -20,7 +20,10 @@ public class Watchlist {
         }
     }
 
-    public void addToWatchlist(Movie movie) {
+    public void addToWatchlist(Movie movie) throws MovieAlreadyInWatchlistException {
+        if (watchlist.contains(movie)) {
+            throw new MovieAlreadyInWatchlistException("Movie already in watchlist: " + movie.getTitle());
+        }
         watchlist.add(movie);
         saveWatchlist();
     }
