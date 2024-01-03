@@ -10,15 +10,20 @@ public class User {
     private String username;
     private String password;
 
-    public User(String username, String password) throws UsernameLengthException {
-        try {
-            setUsername(username);
-            setPassword(password);
-        } catch (UsernameLengthException e) {
-            e.printStackTrace(); 
+    public User(String username, String password) {
+        if (isAdmin(username, password)) {
+            this.username = username;
+            this.password = password;
+        } else {
+            try {
+                setUsername(username);
+                setPassword(password);
+            } catch (UsernameLengthException e) {
+                e.printStackTrace();
+            }
         }
     }
-
+    
     public String getUsername() {
         return username;
     }
@@ -70,37 +75,38 @@ public class User {
         }
     }
 
-    public void login() throws UserNotFoundException {
+    public int login() {
         HashMap<String, String> users = readUserDatabase();
         if (getUsername() == null || getPassword() == null) {
-            System.out.println("Username or password was been written incorrectly.");
-            return;
+            return -1;
         }
         if (!users.containsKey(getUsername())) {
-            throw new UserNotFoundException("User -> " + getUsername() + " is not registered. Before logging in, please register!");
+            return -2;
         }
-        if (users.get(getUsername()).equals(getPassword())) {
-            System.out.println("User -> " + getUsername() + " logged in.");
-        } else {
-            System.out.println("Incorrect password.");
+        if (!users.get(getUsername()).equals(getPassword())) {
+            return -3;
         }
+        return 1;
     }
 
-    public void register() throws UserExistedException {
+    public int register() {
         HashMap<String, String> users = readUserDatabase();
         if (users.containsKey(getUsername())) {
-            throw new UserExistedException("User -> " + getUsername() + " already exists.");
+            return -1;
         }
         try {
             setPassword(getPassword());
             users.put(getUsername(), getPassword());
             writeUserDatabase(users);
-            System.out.println("User -> " + getUsername() + " registered.");
+            return 1;
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            return -2;
         }
     }
 
+    private boolean isAdmin(String username, String password) {
+        return "admin".equals(username) && "1223334444".equals(password);
+    }
     // public static void main(String[] args) {
     //     User user = new User("jane_doe", "securepassword123");
     

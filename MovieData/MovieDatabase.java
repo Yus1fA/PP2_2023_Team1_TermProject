@@ -50,39 +50,45 @@ public class MovieDatabase {
 
     public List<Movie> getMoviesByTitle(String title) {
         return movies.values().stream()
-                .filter(movie -> movie.getTitle().equalsIgnoreCase(title))
-                .collect(Collectors.toList());
+                                .sorted(Comparator.comparing(Movie::getTitle))
+                                .collect(Collectors.toList());
     }
 
     public List<Movie> getMoviesByDirector(String director) {
         return movies.values().stream()
-                .filter(movie -> movie.getDirector().equals(director))
-                .collect(Collectors.toList());
+                                .sorted(Comparator.comparing(Movie::getDirector))
+                                .collect(Collectors.toList());
     }
 
-    public List<Movie> getMoviesByReleaseYear(int releaseYear) {
+    public List<Movie> getMoviesByReleaseYear() {
         return movies.values().stream()
-                .filter(movie -> movie.getReleaseYear() == releaseYear)
-                .collect(Collectors.toList());
+                     .sorted(Comparator.comparingInt(Movie::getReleaseYear))
+                     .collect(Collectors.toList());
     }
 
-    public List<Movie> getMoviesByRunningTime(int runningTime) {
+    public List<Movie> getMoviesByRunningTime() {
         return movies.values().stream()
-                .filter(movie -> movie.getRunningTime() == runningTime)
-                .collect(Collectors.toList());
+                     .sorted(Comparator.comparingInt(Movie::getRunningTime))
+                     .collect(Collectors.toList());
     }
 
     public void saveMoviesToFile(String filename) throws IOException {
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filename))) {
+        Path filePath = Paths.get(filename);
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
             for (Movie movie : movies.values()) {
-                writer.write(movie.toString());
+                writer.write(movie.getTitle() + ":" + movie.getDirector() + ":" + 
+                             movie.getReleaseYear() + ":" + movie.getRunningTime());
                 writer.newLine();
             }
         }
     }
 
     public void loadMoviesFromFile(String filename) throws IOException {
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(filename))) {
+        Path filePath = Paths.get(filename);
+        if (!Files.exists(filePath)) {
+            filePath = Paths.get(filename);
+        }
+        try (BufferedReader reader = Files.newBufferedReader(filePath)) {
             String line;
             while ((line = reader.readLine()) != null) {
                 Movie movie = parseMovie(line);
@@ -119,17 +125,17 @@ public class MovieDatabase {
         System.out.println("Movie removed from the database: " + deletedMovie.getTitle());
     }
 
-    private Movie parseMovie(String line) {
-        String[] parts = line.split(",");
+    private Movie parseMovie(String line) throws IllegalArgumentException {
+        String[] parts = line.split(":");
         if (parts.length != 4) {
             throw new IllegalArgumentException("Invalid movie format.");
         }
-
+    
         String title = parts[0];
         String director = parts[1];
         int releaseYear = Integer.parseInt(parts[2]);
         int runningTime = Integer.parseInt(parts[3]);
-
+    
         return new Movie(title, director, releaseYear, runningTime);
     }
 
